@@ -1,4 +1,3 @@
-// src/extension.ts
 import * as vscode from 'vscode';
 import { MockServer } from './MockServer';
 import { MockTreeDataProvider } from './MockTreeDataProvider';
@@ -9,6 +8,10 @@ let listenPort = 3000;
 
 // 插件激活时调用
 export function activate(context: vscode.ExtensionContext) {
+  // 初始化 startStopButton
+  startStopButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+  startStopButton.show();
+
   mockServerInstance = new MockServer(listenPort, startStopButton);
 
   const startDisposable = vscode.commands.registerCommand('extension.startMockServer', () => {
