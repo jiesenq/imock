@@ -12,6 +12,9 @@ const listenPort = vscode.workspace
 
 // 插件激活时调用
 export function activate(context: vscode.ExtensionContext) {
+  // 注册树状视图数据提供者
+  const treeDataProvider = new MockTreeDataProvider();
+  vscode.window.registerTreeDataProvider("imock-full-view", treeDataProvider);
   // 初始化 startStopButton
   startStopButton = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
@@ -43,11 +46,6 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   mockServerInstance?.updateButtonText(false);
-
-  // 注册树状视图数据提供者
-  const treeDataProvider = new MockTreeDataProvider();
-  vscode.window.registerTreeDataProvider("imockTreeView", treeDataProvider);
-
   context.subscriptions.push(startDisposable, stopDisposable, startStopButton);
 }
 

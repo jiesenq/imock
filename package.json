@@ -10,10 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.startMockServer",
-    "onCommand:extension.stopMockServer",
-    "onCommand:extension.showConfigDialog",
-    "onView:imockTreeView"
+    "onView:imock-full-view",
+    "onView:iimock-panel-view"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -40,21 +38,30 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "imockViewContainer",
+          "id": "imock-icon",
           "title": "IMock",
-          "icon": "media/imock.svg"
+          "icon": "media/imock-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "imock-icon": [
+        {
+          "type": "webview",
+          "id": "imock-full-view",
+          "name": "IMock",
+          "icon": "media/imock-icon.svg",
+          "contextualTitle": "IMock"
+        }
+      ],
+      "explorer": [
+        {
+          "type": "webview",
+          "name": "IMock",
+          "id": "imock-panel-view"
         }
       ]
     }
-  },
-  "views": {
-    "imockViewContainer": [
-      {
-        "id": "imockTreeView",
-        "name": "Mock 服务列表",
-        "when": "imockExtensionEnabled"
-      }
-    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
