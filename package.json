@@ -45,16 +45,16 @@
           "icon": "media/imock.svg"
         }
       ]
-    },
-    "views": {
-      "imockViewContainer": [
-        {
-          "id": "imockTreeView",
-          "name": "Mock 服务列表",
-          "when": "imockExtensionEnabled"
-        }
-      ]
     }
+  },
+  "views": {
+    "imockViewContainer": [
+      {
+        "id": "imockTreeView",
+        "name": "Mock 服务列表",
+        "when": "imockExtensionEnabled"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
