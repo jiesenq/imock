@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "IMock",
+			"path": "."
+		},
+		{
+			"name": ".vscode",
+			"path": "imock/.vscode"
+		}
+	],
+	"settings": {}
+}
