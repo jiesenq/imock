@@ -27,12 +27,22 @@
         "title": "关闭 Mock 服务"
       }
     ],
+    "configuration": {
+      "title": "Imock 配置",
+      "properties": {
+        "imock.listenPort": {
+          "type": "number",
+          "default": 3000,
+          "description": "Mock 服务的监听端口"
+        }
+      }
+    },
     "viewsContainers": {
       "activitybar": [
         {
           "id": "imockViewContainer",
           "title": "IMock",
-          "icon": "media/imock.svg" 
+          "icon": "media/imock.svg"
         }
       ]
     },
