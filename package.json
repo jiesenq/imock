@@ -19,7 +19,7 @@
     "onView:imock.startMockServer",
     "onView:imock.stopMockServer",
     "onView:imock-full-view",
-    "onView:imock-panel-view"
+    "onCommand:imock.showTreeView"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -31,6 +31,10 @@
       {
         "command": "imock.stopMockServer",
         "title": "关闭 Mock 服务"
+      },
+      {
+        "command": "imock.showTreeView",
+        "title": "显示树状视图"
       }
     ],
     "configuration": {
@@ -59,7 +63,8 @@
         {
           "id": "imock-icon",
           "title": "IMock",
-          "icon": "media/imock-icon.svg"
+          "icon": "media/imock-icon.svg",
+          "command": "imock.showTreeView"
         }
       ]
     },
@@ -75,6 +80,7 @@
       ],
       "explorer": [
         {
+          "icon": "media/imock-icon.svg",
           "type": "webview",
           "name": "IMock",
           "id": "imock-panel-view"
