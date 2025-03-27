@@ -16,8 +16,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:imock.startMockServer",
-    "onView:imock.stopMockServer",
     "onView:imock-full-view",
     "onCommand:imock.showTreeView"
   ],

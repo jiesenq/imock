@@ -14,13 +14,27 @@ const listenPort = vscode.workspace
   .get("listenPort", 3000);
 
 // 插件激活时调用
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   // 注册树状视图数据提供者
-  const emptyTreeDataProvider = new EmptyTreeDataProvider();
-  vscode.window.registerTreeDataProvider(
-    "imock-full-view",
-    emptyTreeDataProvider
-  );
+  try {
+    // const emptyTreeDataProvider = new EmptyTreeDataProvider();
+    // await vscode.window.registerTreeDataProvider(
+    //   "imock-full-view",
+    //   emptyTreeDataProvider
+    // );
+    // 注册 imock.showTreeView 命令，在命令的实现中调用
+    const showTreeViewDisposable = vscode.commands.registerCommand(
+      "imock.showTreeView",
+      async () => {
+        await vscode.commands.executeCommand(
+          "workbench.view.extension.imock-full-view"
+        );
+      }
+    );
+    context.subscriptions.push(showTreeViewDisposable);
+  } catch (error) {
+    vscode.window.showErrorMessage(`树状视图数 注册时出错11111: ${error}`);
+  }
   try {
     // 初始化 mockSwichButton
     mockSwichButton = vscode.window.createStatusBarItem(
@@ -44,20 +58,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     mockServerInstance?.updateButtonText(false);
 
-    // 注册 imock.showTreeView 命令，在命令的实现中调用
-    const showTreeViewDisposable = vscode.commands.registerCommand(
-      "imock.showTreeView",
-      () => {
-        vscode.commands.executeCommand(
-          "workbench.view.extension.imock-full-view"
-        );
-      }
-    );
     context.subscriptions.push(
       startDisposable,
       stopDisposable,
-      mockSwichButton,
-      showTreeViewDisposable
+      mockSwichButton
     );
   } catch (error) {
     vscode.window.showErrorMessage(`Mock 服务时出错: ${error}`);
