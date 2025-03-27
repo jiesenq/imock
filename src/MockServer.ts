@@ -5,7 +5,7 @@ import * as http from "http";
 export class MockServer {
   private server: http.Server | null = null;
   private listenPort: number;
-  private startStopButton: vscode.StatusBarItem;
+  startStopButton: vscode.StatusBarItem;
 
   constructor(listenPort: number, startStopButton: vscode.StatusBarItem) {
     this.listenPort = listenPort;
@@ -50,10 +50,10 @@ export class MockServer {
   updateButtonText(isRunning: boolean) {
     if (isRunning) {
       this.startStopButton.text = "$(debug-stop) 关闭 Mock 服务";
-      this.startStopButton.command = "extension.stopMockServer";
+      this.startStopButton.command = "imock.stopMockServer";
     } else {
       this.startStopButton.text = "$(play) 开启 Mock 服务";
-      this.startStopButton.command = "extension.startMockServer";
+      this.startStopButton.command = "imock.startMockServer";
     }
   }
 }

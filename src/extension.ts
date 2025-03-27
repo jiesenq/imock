@@ -13,8 +13,13 @@ const listenPort = vscode.workspace
 // 插件激活时调用
 export function activate(context: vscode.ExtensionContext) {
   // 注册树状视图数据提供者
-  const treeDataProvider = new MockTreeDataProvider();
-  vscode.window.registerTreeDataProvider("imock-full-view", treeDataProvider);
+  try {
+    const treeDataProvider = new MockTreeDataProvider();
+    vscode.window.registerTreeDataProvider("imock-full-view", treeDataProvider);
+    console.log("imock-full-view 视图已注册");
+  } catch (error) {
+    console.error("注册 imock-full-view 视图时出错:", error);
+  }
   // 初始化 startStopButton
   startStopButton = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
