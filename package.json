@@ -2,7 +2,13 @@
   "name": "imock",
   "displayName": "Imock",
   "description": "前端 mock 后端接口，支持开启和关闭",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "author": "Billy Qin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jiesenq/imock"
+  },
   "engines": {
     "vscode": "^1.98.0"
   },
@@ -11,17 +17,17 @@
   ],
   "activationEvents": [
     "onView:imock-full-view",
-    "onView:iimock-panel-view"
+    "onView:imock-panel-view"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.startMockServer",
+        "command": "imock.startMockServer",
         "title": "开启 Mock 服务"
       },
       {
-        "command": "extension.stopMockServer",
+        "command": "imock.stopMockServer",
         "title": "关闭 Mock 服务"
       }
     ],
@@ -32,6 +38,17 @@
           "type": "number",
           "default": 3000,
           "description": "Mock 服务的监听端口"
+        },
+        "imock.logLevel": {
+          "type": "string",
+          "default": "info",
+          "enum": [
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ],
+          "description": "Mock 服务的日志级别"
         }
       }
     },
@@ -70,7 +87,7 @@
     "package": "webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint || (echo 'Pretest failed' && exit 1)",
     "test": "vscode-test",
     "lint": "eslint src --ext ts"
   },
@@ -93,8 +110,8 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "axios": "^1.8.4",
-    "element-plus": "^2.3.7",
-    "vue": "^3.2.47"
+    "axios": "1.8.4",
+    "element-plus": "2.3.7",
+    "vue": "3.2.47"
   }
 }

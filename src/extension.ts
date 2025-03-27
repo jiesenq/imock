@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
   mockServerInstance = new MockServer(listenPort, startStopButton);
 
   const startDisposable = vscode.commands.registerCommand(
-    "extension.startMockServer",
+    "imock.startMockServer",
     () => {
       try {
         mockServerInstance?.start();
@@ -35,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
   const stopDisposable = vscode.commands.registerCommand(
-    "extension.stopMockServer",
+    "imock.stopMockServer",
     () => {
       try {
         mockServerInstance?.stop();
