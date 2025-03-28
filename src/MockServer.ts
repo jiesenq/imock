@@ -15,11 +15,13 @@ export class MockServer {
       vscode.StatusBarAlignment.Right,
       100
     );
+    this.mockSwichButton.show();
+    this.context.subscriptions.push(this.mockSwichButton);
   }
   // 显示 mock开关
   showMockSwich() {
-    this.mockSwichButton.show();
-    this.context.subscriptions.push(this.mockSwichButton);
+    // this.mockSwichButton.show();
+    // this.context.subscriptions.push(this.mockSwichButton);
   }
   // 开启 mock 服务
   start() {
