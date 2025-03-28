@@ -15,6 +15,14 @@ const listenPort = vscode.workspace
 
 // 插件激活时调用
 export async function activate(context: vscode.ExtensionContext) {
+  // 初始化 mockSwichButton
+  mockSwichButton = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  mockSwichButton.show();
+  context.subscriptions.push(mockSwichButton);
+
   // 注册树状视图数据提供者
   try {
     // const emptyTreeDataProvider = new EmptyTreeDataProvider();
@@ -36,12 +44,6 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.showErrorMessage(`树状视图数 注册时出错11111: ${error}`);
   }
   try {
-    // 初始化 mockSwichButton
-    mockSwichButton = vscode.window.createStatusBarItem(
-      vscode.StatusBarAlignment.Right,
-      100
-    );
-    mockSwichButton.show();
     mockServerInstance = new MockServer(listenPort, mockSwichButton);
     const startDisposable = vscode.commands.registerCommand(
       "imock.startMockServer",
