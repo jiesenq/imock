@@ -16,7 +16,7 @@ export class MockServer {
       100
     );
     this.mockSwichButton.show();
-    this.context.subscriptions.push(this.mockSwichButton);
+    // this.context.subscriptions.push(this.mockSwichButton);
   }
   // 显示 mock开关
   showMockSwich() {

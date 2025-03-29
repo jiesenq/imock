@@ -1,7 +1,7 @@
 // src/extension.ts
 import * as vscode from "vscode";
 import { MockServer } from "./MockServer";
-import { WebViewManager } from "./view/WebViewManager";
+import WebviewViewProvider from "./view/WebviewViewProvider";
 import { EmptyTreeDataProvider } from "./EmptyTreeDataProvider";
 
 let mockServerInstance: MockServer | null = null;
@@ -17,8 +17,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // registerCommand
   registerCommand(context);
-  // 创建 WebView
-  // WebView();
+  // 创建 register WebView
+  registerWebView(context);
 }
 
 // 插件停用时代码清理
@@ -30,8 +30,8 @@ function openStaus(context: vscode.ExtensionContext) {
     vscode.StatusBarAlignment.Right,
     100
   );
-  mockSwichButton.show();
-  context.subscriptions.push(mockSwichButton);
+  // mockSwichButton.show();
+  // context.subscriptions.push(mockSwichButton);
 }
 
 function registerCommand(context: vscode.ExtensionContext) {
@@ -51,8 +51,15 @@ function registerCommand(context: vscode.ExtensionContext) {
   );
 }
 
-function WebView() {
+function registerWebView(context: vscode.ExtensionContext) {
   // 创建 WebView 管理器实例并创建 WebView
-  const webViewManager = new WebViewManager();
-  webViewManager.createWebView();
+  // const webViewManager = new WebViewManager();
+  // webViewManager.createWebView();
+  const provider = new WebviewViewProvider(context.extensionUri);
+  const provider2 = new WebviewViewProvider(context.extensionUri);
+
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider("mock-view", provider),
+    vscode.window.registerWebviewViewProvider("intercept-view", provider2)
+  );
 }
