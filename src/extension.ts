@@ -1,43 +1,46 @@
 // src/extension.ts
 import * as vscode from "vscode";
 import { MockServer } from "./MockServer";
-import { WebViewManager } from "./WebViewManager";
+import { WebViewManager } from "./view/WebViewManager";
 import { EmptyTreeDataProvider } from "./EmptyTreeDataProvider";
 
 let mockServerInstance: MockServer | null = null;
 // 从配置中获取监听端口，默认值为 3000
-const listenPort = vscode.workspace
+let listenPort = vscode.workspace
   .getConfiguration("imock")
   .get("listenPort", 3000);
 
 // 插件激活时调用
 export async function activate(context: vscode.ExtensionContext) {
   // 初始化 mockSwichButton
+  openStaus(context);
 
-  // 注册树状视图数据提供者
-  // const emptyTreeDataProvider = new EmptyTreeDataProvider();
-  // const view = await vscode.window.createTreeView("imock-full-view", {
-  //   treeDataProvider: emptyTreeDataProvider,
-  //   showCollapseAll: true,
-  // });
-  // context.subscriptions.push(view);
+  // registerCommand
+  registerCommand(context);
+  // 创建 WebView
+  // WebView();
+}
 
-  // 注册 imock.showTreeView 命令，在命令的实现中调用
-  // const showTreeViewDisposable = vscode.commands.registerCommand(
-  //   "imock.showTreeView",
-  //   async () => {
-  //     await vscode.commands.executeCommand(
-  //       "workbench.view.extension.imock-full-view"
-  //     );
-  //   }
-  // );
-  // context.subscriptions.push(showTreeViewDisposable);  mockServerInstance?.updateButtonText(false);
+// 插件停用时代码清理
+export function deactivate() {
+  mockServerInstance?.stop();
+}
+function openStaus(context: vscode.ExtensionContext) {
+  let mockSwichButton = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100
+  );
+  mockSwichButton.show();
+  context.subscriptions.push(mockSwichButton);
+}
 
-  // extensionHelper.registerViewContainer(context);
-
-  // startDisposable
+function registerCommand(context: vscode.ExtensionContext) {
   mockServerInstance = new MockServer(listenPort, context);
-
+  try {
+    mockServerInstance?.updateButtonText(false);
+  } catch (error) {
+    console.log("error:", error);
+  }
   context.subscriptions.push(
     vscode.commands.registerCommand("imock.startMockServer", () => {
       mockServerInstance?.start();
@@ -46,30 +49,10 @@ export async function activate(context: vscode.ExtensionContext) {
       mockServerInstance?.stop();
     })
   );
-  try {
-    mockServerInstance?.updateButtonText(false);
-    mockServerInstance?.showMockSwich();
-  } catch (error) {
-    console.log("error:", error);
-  }
-
-  // context.subscriptions.push(
-  //   vscode.window.registerWebviewViewProvider(
-  //     "imock-full-view",
-  //     new WebviewViewProvider(
-  //       browserWebview,
-  //       context,
-  //       CONST_WEBVIEW.CONFIG.BASE.BROWSER
-  //     )
-  //   )
-  // );
-
-  // 创建 WebView 管理器实例并创建 WebView
-  // const webViewManager = new WebViewManager(context);
-  // webViewManager.createWebView();
 }
 
-// 插件停用时代码清理
-export function deactivate() {
-  mockServerInstance?.stop();
+function WebView() {
+  // 创建 WebView 管理器实例并创建 WebView
+  const webViewManager = new WebViewManager();
+  webViewManager.createWebView();
 }
