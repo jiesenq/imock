@@ -2,6 +2,7 @@
 import * as vscode from "vscode";
 import * as registerCommand from "./helpers/registerCommand";
 import * as registerViewContainer from "./helpers/registerViewContainer";
+import { mockServerInstance } from "./helpers/registerCommand";
 
 // 插件激活时调用
 export async function activate(context: vscode.ExtensionContext) {
@@ -14,5 +15,5 @@ export async function activate(context: vscode.ExtensionContext) {
 
 // 插件停用时代码清理
 export function deactivate() {
-  // mockServerInstance?.stop();
+  mockServerInstance?.stop();
 }
