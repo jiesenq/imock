@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 const BASE = {
   BROWSER: {
     viewType: "browser",

@@ -1,8 +1,5 @@
 import * as vscode from "vscode";
-import CONST_CONFIGS from "../data/configs";
-import CONST_WEBVIEW from "../data/webview";
-import Data, { FavouriteData } from "../types/data";
-// import { WebviewContext } from "../../types/";
+import Data from "../types/data";
 interface WebviewContext {
   extensionPath: string;
   webviewUri: string;
@@ -12,22 +9,20 @@ interface WebviewMessage {
   type: string;
   value?: any;
 }
-let activePanels: Array<vscode.WebviewPanel> = [];
 
 export function bindWebviewEvents(
   panel: any,
   template: Function,
   context: vscode.ExtensionContext,
-  data: Data
+  data?: Data
 ): void {
-  // let configs = vscode.workspace.getConfiguration("imock");
-  panel.webview.html = getWebViewContent(
+  let o = (panel.webview.html = getWebViewContent(
     panel.webview,
     template,
     context.extensionUri,
     context.extensionPath,
     data
-  );
+  ));
 }
 
 /**
@@ -44,18 +39,15 @@ export function getWebViewContent(
   template: Function,
   extensionUri: vscode.Uri,
   extensionPath: string,
-  data: Data
+  data?: Data
 ) {
   // Create uri for webview
   const webviewUri = webview.asWebviewUri(
     vscode.Uri.joinPath(extensionUri, "/")
   ) as unknown as string;
-
-  return (
-    template({
-      webviewUri: webviewUri,
-      extensionPath: extensionPath + "/",
-    } as WebviewContext),
-    data
-  );
+  let html = template({
+    webviewUri: webviewUri,
+    extensionPath: extensionPath + "/",
+  });
+  return html;
 }

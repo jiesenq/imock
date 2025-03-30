@@ -10,10 +10,11 @@ import Data from "../data/types";
 import { bindWebviewEvents } from "../helpers/bindWebviewEvents";
 
 class WebviewViewProvider implements vscode.WebviewViewProvider {
+  private _view?: vscode.WebviewView;
   constructor(
     private readonly template: Function,
     private readonly context: ExtensionContext,
-    private readonly data: Data
+    private readonly data: Data // private readonly _extensionUri: vscode.Uri
   ) {}
 
   // Resolves and sets up the Webview
@@ -22,20 +23,13 @@ class WebviewViewProvider implements vscode.WebviewViewProvider {
     context: WebviewViewResolveContext,
     _token: CancellationToken
   ): void {
+    this._view = webviewView;
     // Configure Webview options
     webviewView.webview.options = {
       enableScripts: true,
     };
-    const { title, viewType, url } = context.state as Data;
-    const state = {
-      ...this.data,
-      title,
-      viewType,
-      url,
-    };
     // Set the Webview content
-    bindWebviewEvents(webviewView, this.template, this.context, state);
-    // bindWebviewEvents(webviewView, this.template, this.context);
+    bindWebviewEvents(webviewView, this.template, this.context, this.data);
   }
 }
 
