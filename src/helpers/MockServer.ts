@@ -11,18 +11,23 @@ export class MockServer {
   constructor(listenPort: number, context: vscode.ExtensionContext) {
     this.listenPort = listenPort;
     this.context = context;
+    // 初始化 mockSwichButton 显示 mock开关
     this.mockSwichButton = vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Right,
       100
     );
     this.mockSwichButton.show();
-    // this.context.subscriptions.push(this.mockSwichButton);
+    this.context.subscriptions.push(this.mockSwichButton);
   }
-  // 显示 mock开关
-  showMockSwich() {
-    // this.mockSwichButton.show();
-    // this.context.subscriptions.push(this.mockSwichButton);
-  }
+  // 初始化 mockSwichButton 显示 mock开关
+  // showMockSwich() {
+  //   this.mockSwichButton = vscode.window.createStatusBarItem(
+  //     vscode.StatusBarAlignment.Right,
+  //     100
+  //   );
+  //   this.mockSwichButton.show();
+  //   this.context.subscriptions.push(this.mockSwichButton);
+  // }
   // 开启 mock 服务
   start() {
     if (this.server) {
