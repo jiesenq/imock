@@ -8,7 +8,7 @@ interface WebviewContext {
 }
 export const mockViewTemplate = (webviewContext: WebviewContext) => {
   let html = readFileSync(
-    webviewContext.extensionPath + "assets/browser.html",
+    webviewContext.extensionPath + "src/views/pages/mock-api.html",
     "utf8"
   );
   return html;
