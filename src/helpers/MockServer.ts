@@ -5,13 +5,29 @@ import * as http from "http";
 export class MockServer {
   private server: http.Server | null = null;
   private listenPort: number;
-  mockSwichButton: vscode.StatusBarItem;
+  private mockSwichButton: vscode.StatusBarItem;
+  private context: vscode.ExtensionContext;
 
-  constructor(listenPort: number, mockSwichButton: vscode.StatusBarItem) {
+  constructor(listenPort: number, context: vscode.ExtensionContext) {
     this.listenPort = listenPort;
-    this.mockSwichButton = mockSwichButton;
+    this.context = context;
+    // 初始化 mockSwichButton 显示 mock开关
+    this.mockSwichButton = vscode.window.createStatusBarItem(
+      vscode.StatusBarAlignment.Right,
+      100
+    );
+    this.mockSwichButton.show();
+    this.context.subscriptions.push(this.mockSwichButton);
   }
-
+  // 初始化 mockSwichButton 显示 mock开关
+  // showMockSwich() {
+  //   this.mockSwichButton = vscode.window.createStatusBarItem(
+  //     vscode.StatusBarAlignment.Right,
+  //     100
+  //   );
+  //   this.mockSwichButton.show();
+  //   this.context.subscriptions.push(this.mockSwichButton);
+  // }
   // 开启 mock 服务
   start() {
     if (this.server) {

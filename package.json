@@ -15,12 +15,7 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onView:imock.startMockServer",
-    "onView:imock.stopMockServer",
-    "onView:imock-full-view",
-    "onCommand:imock.showTreeView"
-  ],
+  "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
@@ -72,18 +67,17 @@
       "imock-icon": [
         {
           "type": "webview",
-          "id": "imock-full-view",
-          "name": "IMock",
+          "id": "mock-view",
+          "name": "Mock API",
           "icon": "media/imock-icon.svg",
           "contextualTitle": "IMock"
-        }
-      ],
-      "explorer": [
+        },
         {
-          "icon": "media/imock-icon.svg",
           "type": "webview",
-          "name": "IMock",
-          "id": "imock-panel-view"
+          "id": "intercept-view",
+          "name": "Intercept api",
+          "icon": "media/imock-icon.svg",
+          "contextualTitle": "IMock"
         }
       ]
     }
