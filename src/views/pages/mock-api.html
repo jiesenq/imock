@@ -49,13 +49,18 @@
         </el-form-item>
         <el-form-item
           label="请求入参"
-          :rules="[{ required: true, message: '请输入请求入参', trigger: 'blur' }]"
+          :rules="[{ message: '请输入请求入参', trigger: 'blur' }]"
         >
-          <el-input v-model="form.requestParams"></el-input>
+          <!-- 修改为 textarea 并添加 autosize 属性 -->
+          <el-input type="textarea" v-model="form.requestParams" :autosize="{ minRows: 2, maxRows: 50 }"></el-input>
+        </el-form-item>
+        </el-form-item>
+        <el-form-item label="请求结果">
+          <el-input type="textarea" v-model="form.requestResult" :autosize="{ minRows: 2, maxRows: 5 }"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm">提交</el-button>
-          <el-button @click="resetForm">重置</el-button>
+          <el-button type="primary" @click="submitForm">保存设置</el-button>
+          <el-button @click="resetForm">结果 >></el-button>
         </el-form-item>
       </el-form>
     </div>
