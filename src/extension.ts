@@ -12,6 +12,11 @@ export async function activate(context: vscode.ExtensionContext) {
   // 创建 register WebView
   registerViewContainer.treeContainer(context);
 }
+if (mockServerInstance) {
+  mockServerInstance.setMockResponse("GET", "/page/getTableSearch", {
+    message: "这是自定义的 mock 数据",
+  });
+}
 
 // 插件停用时代码清理
 export function deactivate() {

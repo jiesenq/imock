@@ -25,6 +25,12 @@ export class MockServer {
     this.context.subscriptions.push(this.mockSwichButton);
   }
 
+  // 设置自定义响应
+  setMockResponse(method: string, path: string, response: any) {
+    const key = `${method} ${path}`;
+    this.mockResponses[key] = response;
+  }
+
   // 开启 mock 服务
   start() {
     if (this.server) {
@@ -32,20 +38,28 @@ export class MockServer {
       return;
     }
 
-    // this.server = http.createServer((req, res) => {
-    //   res.writeHead(200, { "Content-Type": "application/json" });
-    //   const mockData = { message: "这是一个 mock 数据" };
-    //   res.end(JSON.stringify(mockData));
-    // });
-    // this.server.listen(this.listenPort, () => {
-    //   vscode.window.showInformationMessage(
-    //     `Mock 服务已开启，监听端口: ${this.listenPort}`
-    //   );
-    //   this.updateButtonText(true);
-    // });
-
-    // // 创建代理服务器
+    // 创建代理服务器
     this.server = http.createServer((req, res) => {
+      console.log("req     :", req);
+
+      // 添加跨域头
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, DELETE, OPTIONS"
+      );
+      res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization"
+      );
+
+      // 处理 OPTIONS 请求
+      if (req.method === "OPTIONS") {
+        res.writeHead(200);
+        res.end();
+        return;
+      }
+
       const url = new URL(req.url || "", `http://${req.headers.host}`);
       const key = `${req.method} ${url.pathname}`;
 
@@ -65,6 +79,8 @@ export class MockServer {
 
         const protocol = url.protocol === "https:" ? https : http;
         const proxyReq = protocol.request(options, (proxyRes) => {
+          // 添加跨域头到响应
+          proxyRes.headers["Access-Control-Allow-Origin"] = "*";
           res.writeHead(proxyRes.statusCode || 200, proxyRes.headers);
           proxyRes.pipe(res);
         });
@@ -74,12 +90,26 @@ export class MockServer {
     });
 
     // 启动代理服务器
-    this.server.listen(8080, () => {
+    this.server.listen(8081, () => {
       vscode.window.showInformationMessage(
-        "Mock 代理服务器已启动，监听端口 8080"
+        "Mock 代理服务器已启动，监听端口 8081"
+      );
+      vscode.window.showInformationMessage(
+        "请手动配置浏览器代理，使用 127.0.0.1:8081 作为代理服务器。"
       );
       this.updateButtonText(true);
     });
+    // .on("error", (err) => {
+    //   if (err.code === "EADDRINUSE") {
+    //     vscode.window.showErrorMessage(
+    //       "端口 8080 已被占用，请关闭其他占用该端口的程序后重试。"
+    //     );
+    //   } else {
+    //     vscode.window.showErrorMessage(
+    //       `启动代理服务器时发生错误: ${err.message}`
+    //     );
+    //   }
+    // });
   }
 
   // 关闭 mock 服务
