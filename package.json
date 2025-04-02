@@ -58,7 +58,7 @@
         {
           "id": "imock-icon",
           "title": "IMock",
-          "icon": "media/imock-icon.svg",
+          "icon": "media/mock-icon.svg",
           "command": "imock.showTreeView"
         }
       ]
@@ -69,14 +69,13 @@
           "type": "webview",
           "id": "mock-view",
           "name": "Mock API",
-          "icon": "media/imock-icon.svg",
           "contextualTitle": "IMock"
         },
         {
           "type": "webview",
           "id": "intercept-view",
           "name": "Intercept api",
-          "icon": "media/imock-icon.svg",
+          "icon": "media/mock-icon.svg",
           "contextualTitle": "IMock"
         }
       ]

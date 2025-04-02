@@ -35,7 +35,7 @@ export function bindWebviewEvents(
         }
         break;
     }
-  }, undefined);
+  });
 }
 
 /**

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <g transform="rotate(45 100 100)">
+        <rect x="10" y="10" width="180" height="180" stroke="black" stroke-width="10" fill="none" />
+    </g>
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+        font-family="Microsoft YaHei" font-size="120" font-weight="900"
+        transform="translate(0, 15)"
+        fill="green">M</text>
+</svg>
