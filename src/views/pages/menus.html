@@ -3,7 +3,87 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 引入 ElementPlus CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-plus/dist/index.css"
+    />
     <title>Menus</title>
+    <style>
+      .grid-container {
+        margin-top: 20px;
+      }
+      /* 为所有按钮添加边框和左右 padding */
+      .el-button {
+        border: 1px solid;
+        padding: 0 10px;
+      }
+    </style>
   </head>
-  <body></body>
+
+  <body>
+    <div id="app">
+      <div class="grid-container">
+        <el-row :gutter="10">
+          <el-col :span="8" v-for="(item, index) in menuItems" :key="index">
+            <el-button
+              @click="loadPage(item.page)"
+              :type="item.type"
+              :class="item.class"
+              :disabled="item.disabled"
+            >
+              {{ item.label }}
+            </el-button>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+
+    <!-- 引入 Vue 和 ElementPlus JS -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/element-plus"></script>
+    <script>
+      const { createApp, ref } = Vue;
+
+      const app = createApp({
+        setup() {
+          const menuItems = ref([
+            {
+              label: "开启服务",
+              page: "mock-api.html",
+              disabled: false,
+              type: "primary",
+            },
+            {
+              label: "配置Mock",
+              page: "mock-api.html",
+              disabled: false,
+              type: "primary",
+            },
+            {
+              label: "Browser",
+              page: "page2.html",
+              disabled: true,
+              type: "info",
+            },
+          ]);
+
+          const currentPage = ref("");
+
+          const loadPage = (page) => {
+            currentPage.value = page;
+          };
+
+          return {
+            menuItems,
+            currentPage,
+            loadPage,
+          };
+        },
+      });
+
+      app.use(ElementPlus);
+      app.mount("#app");
+    </script>
+  </body>
 </html>

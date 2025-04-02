@@ -68,7 +68,7 @@
         {
           "type": "webview",
           "id": "mock-view",
-          "name": "Mock API",
+          "name": "Menus",
           "contextualTitle": "IMock"
         },
         {
