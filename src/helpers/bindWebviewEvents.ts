@@ -1,28 +1,31 @@
-import * as vscode from "vscode";
-import Data from "../types/data";
+import * as vscode from 'vscode';
+import Data from '../types/data';
+import { mockServerInstance } from './registerCommand';
 interface WebviewContext {
-  extensionPath: string;
-  webviewUri: string;
+	extensionPath: string;
+	webviewUri: string;
 }
 
 interface WebviewMessage {
-  type: string;
-  value?: any;
+	type: string;
+	value?: any;
 }
 
-export function bindWebviewEvents(
-  panel: any,
-  template: Function,
-  context: vscode.ExtensionContext,
-  data?: Data
-): void {
-  let o = (panel.webview.html = getWebViewContent(
-    panel.webview,
-    template,
-    context.extensionUri,
-    context.extensionPath,
-    data
-  ));
+export function bindWebviewEvents(panel: any, template: Function, context: vscode.ExtensionContext, data?: Data): void {
+	panel.webview.html = getWebViewContent(panel.webview, template, context.extensionUri, context.extensionPath, data);
+	panel.webview.onDidReceiveMessage((message: any) => {
+		console.log('message:', message);
+		vscode.window.showInformationMessage(`message：`, JSON.stringify(message)); // 确保能正确显示消息内容
+		switch (message.command) {
+			case 'submitForm':
+				const { requestType, name, requestParams, requestResult } = message.data;
+				const key = `${requestType} ${name}`;
+				if (mockServerInstance) {
+					mockServerInstance.setMockResponse(requestType, name, requestResult);
+				}
+				break;
+		}
+	}, undefined);
 }
 
 /**
@@ -35,19 +38,17 @@ export function bindWebviewEvents(
  * @returns
  */
 export function getWebViewContent(
-  webview: vscode.Webview,
-  template: Function,
-  extensionUri: vscode.Uri,
-  extensionPath: string,
-  data?: Data
+	webview: vscode.Webview,
+	template: Function,
+	extensionUri: vscode.Uri,
+	extensionPath: string,
+	data?: Data
 ) {
-  // Create uri for webview
-  const webviewUri = webview.asWebviewUri(
-    vscode.Uri.joinPath(extensionUri, "/")
-  ) as unknown as string;
-  let html = template({
-    webviewUri: webviewUri,
-    extensionPath: extensionPath + "/",
-  });
-  return html;
+	// Create uri for webview
+	const webviewUri = webview.asWebviewUri(vscode.Uri.joinPath(extensionUri, '/')) as unknown as string;
+	let html = template({
+		webviewUri: webviewUri,
+		extensionPath: extensionPath + '/',
+	});
+	return html;
 }
