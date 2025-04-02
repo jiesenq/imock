@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import Data from "../types/data";
+import { mockServerInstance } from "./registerCommand";
 interface WebviewContext {
   extensionPath: string;
   webviewUri: string;
@@ -16,13 +17,25 @@ export function bindWebviewEvents(
   context: vscode.ExtensionContext,
   data?: Data
 ): void {
-  let o = (panel.webview.html = getWebViewContent(
+  panel.webview.html = getWebViewContent(
     panel.webview,
     template,
     context.extensionUri,
     context.extensionPath,
     data
-  ));
+  );
+  panel.webview.onDidReceiveMessage((message: any) => {
+    vscode.window.showInformationMessage(`message：`, JSON.stringify(message)); // 确保能正确显示消息内容
+    switch (message.command) {
+      case "submitForm":
+        const { requestType, name, requestResult } = message.data;
+        const key = `${requestType} ${name}`;
+        if (mockServerInstance) {
+          mockServerInstance.setMockResponse(requestType, name, requestResult);
+        }
+        break;
+    }
+  });
 }
 
 /**

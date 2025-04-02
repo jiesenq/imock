@@ -58,7 +58,7 @@
         {
           "id": "imock-icon",
           "title": "IMock",
-          "icon": "media/imock-icon.svg",
+          "icon": "media/mock-icon.svg",
           "command": "imock.showTreeView"
         }
       ]
@@ -69,14 +69,13 @@
           "type": "webview",
           "id": "mock-view",
           "name": "Mock API",
-          "icon": "media/imock-icon.svg",
           "contextualTitle": "IMock"
         },
         {
           "type": "webview",
           "id": "intercept-view",
           "name": "Intercept api",
-          "icon": "media/imock-icon.svg",
+          "icon": "media/mock-icon.svg",
           "contextualTitle": "IMock"
         }
       ]
@@ -113,9 +112,10 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "vue": "3.2.47",
     "axios": "1.8.4",
     "element-plus": "2.3.7",
-    "typescript": "^5.8.2"
+    "express-rate-limit": "^7.5.0",
+    "typescript": "^5.8.2",
+    "vue": "3.2.47"
   }
 }

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mock API with ElementPlus</title>
+    <!-- 引入 ElementPlus 的 CSS 文件 -->
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.5/index.css"
+      rel="stylesheet"
+    />
+    <!-- 引入 Vue 3 的 JavaScript 文件 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- 引入 ElementPlus 的 JavaScript 文件 -->
+    <style>
+      form {
+        margin-top: 20px;
+        font-size: 12px;
+      }
+      /* 初始隐藏按钮文本 */
+      el-button {
+        visibility: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <!-- 使用 ElementPlus 表单组件 -->
+      <el-form
+        :model="form"
+        ref="formRef"
+        label-position="top"
+        style="margin-top: 20px; font-size: 12px"
+      >
+        <el-form-item
+          label="请求地址"
+          :rules="[{ required: true, message: '请输入请求地址', trigger: 'blur' }]"
+        >
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="请求类型">
+          <el-select v-model="form.requestType" placeholder="请选择请求类型">
+            <el-option label="GET" value="GET"></el-option>
+            <el-option label="POST" value="POST"></el-option>
+            <el-option label="PUT" value="PUT"></el-option>
+            <el-option label="DELETE" value="DELETE"></el-option>
+          </el-select>
+        </el-form-item>
+        </el-form-item>
+        <el-form-item label="请求结果">
+          <el-input
+            type="textarea"
+            v-model="form.requestResult"
+            :autosize="{ minRows: 2, maxRows: 5 }"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm">保存设置</el-button>
+          <el-button @click="resetForm">结果 >></el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.5/index.full.min.js"></script>
+    <script>
+      const { createApp, ref, reactive } = Vue;
+      const vscode = acquireVsCodeApi(); // VS Code AP
+      const app = createApp({
+        setup() {
+          const formRef = ref(null);
+          const form = reactive({
+            name: "",
+            requestType: "",
+            requestResult: "",
+          });
+
+          const submitForm = () => {
+            console.log("表单提交成功，数据：" + JSON.stringify(form));
+            formRef.value.validate((valid) => {
+              if (valid) {
+                const { name, requestType, requestParams, requestResult } =
+                  form;
+                vscode.postMessage({
+                  command: "submitForm",
+                  data: {
+                    requestType,
+                    name,
+                    requestResult,
+                  },
+                });
+                console.log(
+                  " submit!!form:",
+                  name,
+                  requestType,
+                  requestParams,
+                  requestResult
+                );
+              } else {
+                console.log("error submit!!");
+              }
+            });
+          };
+
+          const resetForm = () => {
+            formRef.value.resetFields();
+          };
+
+          return {
+            formRef,
+            form,
+            submitForm,
+            resetForm,
+          };
+        },
+      });
+      app.use(ElementPlus);
+      app.mount("#app");
+      // 样式加载完成后显示按钮文本
+      window.onload = function () {
+        const buttonTexts = document.querySelectorAll("el-button");
+        buttonTexts.forEach((text) => {
+          text.style.visibility = "visible";
+        });
+      };
+    </script>
+  </body>
+</html>
