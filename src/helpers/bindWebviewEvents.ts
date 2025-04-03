@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import Data from "../types/data";
 import { mockServerInstance } from "./registerCommand";
+import { mockViewTemplate } from "../views/browser";
 
 interface WebviewContext {
   extensionPath: string;
@@ -12,15 +13,14 @@ interface WebviewMessage {
   value?: any;
 }
 
-let currentPanel: any; // 用于存储当前的 webview panel
+let currentPanel: vscode.WebviewPanel | undefined;
 
 export function bindWebviewEvents(
-  panel: any,
+  panel: vscode.WebviewPanel,
   template: Function,
   context: vscode.ExtensionContext,
   data?: Data
 ): void {
-  currentPanel = panel; // 存储当前的 webview panel
   panel.webview.html = getWebViewContent(
     panel.webview,
     template,
@@ -28,8 +28,9 @@ export function bindWebviewEvents(
     context.extensionPath,
     data
   );
+
   panel.webview.onDidReceiveMessage((message: any) => {
-    vscode.window.showInformationMessage(`message：`, JSON.stringify(message)); // 确保能正确显示消息内容
+    vscode.window.showInformationMessage(`message：`, JSON.stringify(message));
     switch (message.command) {
       case "submitForm":
         const { requestType, name, requestResult } = message.data;
@@ -46,6 +47,45 @@ export function bindWebviewEvents(
       case "stopMockServer":
         if (mockServerInstance) {
           mockServerInstance.stop();
+        }
+        break;
+      case "openMockApiPage":
+        const { page } = message.data;
+        if (page === "mock-api.html") {
+          // 创建新的 webview panel 并显示在右侧
+          const newPanel = vscode.window.createWebviewPanel(
+            "mockApiPage",
+            "Mock API 配置",
+            vscode.ViewColumn.Beside, // 在右侧显示
+            {
+              enableScripts: true,
+              localResourceRoots: [
+                vscode.Uri.joinPath(
+                  context.extensionUri,
+                  "src",
+                  "views",
+                  "pages"
+                ),
+              ],
+            }
+          );
+
+          const newTemplate = () => {
+            const htmlUri = vscode.Uri.joinPath(
+              vscode.Uri.file(context.extensionPath),
+              "src",
+              "views",
+              "pages",
+              page
+            );
+            return vscode.workspace.fs.readFile(htmlUri).then((buffer) => {
+              return buffer.toString();
+            });
+          };
+
+          newTemplate().then((html) => {
+            newPanel.webview.html = html;
+          });
         }
         break;
     }

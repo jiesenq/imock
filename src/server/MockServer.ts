@@ -32,6 +32,8 @@ export class MockServer {
   // 设置自定义响应
   setMockResponse(method: string, path: string, response: any) {
     const key = `${method} ${path}`;
+    console.log("key:", key);
+
     this.mockResponses[key] = response;
   }
 
