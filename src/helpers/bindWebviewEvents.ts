@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import Data from "../types/data";
 import { mockServerInstance } from "./registerCommand";
+
 interface WebviewContext {
   extensionPath: string;
   webviewUri: string;
@@ -11,12 +12,15 @@ interface WebviewMessage {
   value?: any;
 }
 
+let currentPanel: any; // 用于存储当前的 webview panel
+
 export function bindWebviewEvents(
   panel: any,
   template: Function,
   context: vscode.ExtensionContext,
   data?: Data
 ): void {
+  currentPanel = panel; // 存储当前的 webview panel
   panel.webview.html = getWebViewContent(
     panel.webview,
     template,
@@ -34,8 +38,31 @@ export function bindWebviewEvents(
           mockServerInstance.setMockResponse(requestType, name, requestResult);
         }
         break;
+      case "startMockServer":
+        if (mockServerInstance) {
+          mockServerInstance.start();
+        }
+        break;
+      case "stopMockServer":
+        if (mockServerInstance) {
+          mockServerInstance.stop();
+        }
+        break;
     }
   });
+}
+
+/**
+ * 向 webview 发送 Mock 服务状态消息
+ * @param isRunning Mock 服务是否正在运行
+ */
+export function sendMockServerStatusToWebview(isRunning: boolean) {
+  if (currentPanel) {
+    currentPanel.webview.postMessage({
+      command: "updateMockServerStatus",
+      data: { isRunning },
+    });
+  }
 }
 
 /**
