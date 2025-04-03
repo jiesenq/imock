@@ -95,7 +95,7 @@ export class MockServer {
 
 	// 更新按钮文本
 	updateButtonText(isRunning: boolean) {
-		this.mockSwichButton.text = isRunning ? '$(debug-stop) Mock 服务' : '$(play) Mock 服务';
+		this.mockSwichButton.text = isRunning ? '$(debug-stop) 开启服务' : '$(play) 关闭服务';
 		this.mockSwichButton.command = isRunning ? 'imock.stopMockServer' : 'imock.startMockServer';
 	}
 

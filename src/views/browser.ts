@@ -12,7 +12,7 @@ export const mockViewTemplate = (webviewContext: WebviewContext) => {
   // const htmlFilePath = path.join(__dirname, 'mock-api.html');
 
   let html = readFileSync(
-    webviewContext.extensionPath + "src/views/pages/menus.html",
+    webviewContext.extensionPath + "src/views/pages/menu.html",
     "utf8"
   );
   return html;
