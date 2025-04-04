@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { getTemplate } from "../views/browser";
 // eslint-disable-next-line @typescript-eslint/naming-convention
 import CONST_WEBVIEW from "../data/webview";
-import { WebviewViewProvider } from "./crteateWebview/WebviewViewProvider";
+import { WebviewViewProvider } from "./crteateWebview/treeContainer/webviewViewProvider";
 
 export function treeContainer(context: vscode.ExtensionContext) {
   context.subscriptions.push(
