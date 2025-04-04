@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import Data from "../types/data";
-import { mockServerInstance } from "./registerCommand";
-import { mockViewTemplate } from "../views/browser";
+import Data from "../../types/data";
+import { readFileSync } from "fs";
+import { mockServerInstance } from "../registerCommand";
 
 interface WebviewContext {
   extensionPath: string;
@@ -16,18 +16,11 @@ interface WebviewMessage {
 let currentPanel: vscode.WebviewPanel | undefined;
 
 export function bindWebviewEvents(
-  panel: vscode.WebviewPanel,
-  template: Function,
-  context: vscode.ExtensionContext,
-  data?: Data
+  panel: vscode.WebviewView,
+  html: string,
+  context: vscode.ExtensionContext
 ): void {
-  panel.webview.html = getWebViewContent(
-    panel.webview,
-    template,
-    context.extensionUri,
-    context.extensionPath,
-    data
-  );
+  panel.webview.html = html;
 
   panel.webview.onDidReceiveMessage((message: any) => {
     vscode.window.showInformationMessage(`message：`, JSON.stringify(message));
@@ -103,31 +96,4 @@ export function sendMockServerStatusToWebview(isRunning: boolean) {
       data: { isRunning },
     });
   }
-}
-
-/**
- * Get webview context
- *
- * @param webview
- * @param extensionUri
- * @param extensionPath
- * @param data
- * @returns
- */
-export function getWebViewContent(
-  webview: vscode.Webview,
-  template: Function,
-  extensionUri: vscode.Uri,
-  extensionPath: string,
-  data?: Data
-) {
-  // Create uri for webview
-  const webviewUri = webview.asWebviewUri(
-    vscode.Uri.joinPath(extensionUri, "/")
-  ) as unknown as string;
-  let html = template({
-    webviewUri: webviewUri,
-    extensionPath: extensionPath + "/",
-  });
-  return html;
 }

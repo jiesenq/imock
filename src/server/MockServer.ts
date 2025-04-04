@@ -4,7 +4,7 @@ import * as http from "http";
 import * as https from "https";
 import { URL } from "url";
 import rateLimit from "express-rate-limit";
-import { sendMockServerStatusToWebview } from "../helpers/bindWebviewEvents";
+import { sendMockServerStatusToWebview } from "../helpers/events/bindWebviewEvents";
 
 // 模拟的请求结果
 export class MockServer {
