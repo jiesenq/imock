@@ -6,15 +6,14 @@ import {
 } from "vscode";
 import * as vscode from "vscode";
 
-import Data from "../data/types";
-import { bindWebviewEvents } from "../helpers/bindWebviewEvents";
+import Data from "../../../data/types";
+import { bindWebviewEvents } from "../../events/bindWebviewEvents";
 
 class WebviewViewProvider implements vscode.WebviewViewProvider {
   private _view?: vscode.WebviewView;
   constructor(
-    private readonly template: Function,
-    private readonly context: ExtensionContext,
-    private readonly data: Data // private readonly _extensionUri: vscode.Uri
+    private readonly template: string,
+    private readonly context: ExtensionContext // private readonly data: Data // private readonly _extensionUri: vscode.Uri
   ) {}
 
   // Resolves and sets up the Webview
@@ -29,7 +28,7 @@ class WebviewViewProvider implements vscode.WebviewViewProvider {
       enableScripts: true,
     };
     // Set the Webview content
-    bindWebviewEvents(webviewView, this.template, this.context, this.data);
+    bindWebviewEvents(webviewView, this.template, this.context);
   }
 }
 

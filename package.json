@@ -67,8 +67,8 @@
       "imock-icon": [
         {
           "type": "webview",
-          "id": "mock-view",
-          "name": "Mock API",
+          "id": "menu",
+          "name": "Menu",
           "contextualTitle": "IMock"
         },
         {

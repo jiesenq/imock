@@ -9,9 +9,7 @@
       href="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.5/index.css"
       rel="stylesheet"
     />
-    <!-- 引入 Vue 3 的 JavaScript 文件 -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <!-- 引入 ElementPlus 的 JavaScript 文件 -->
+  
     <style>
       form {
         margin-top: 20px;
@@ -34,12 +32,12 @@
         style="margin-top: 20px; font-size: 12px"
       >
         <el-form-item
-          label="请求地址"
+          label="接口名称（省略服务器地址和端口）"
           :rules="[{ required: true, message: '请输入请求地址', trigger: 'blur' }]"
         >
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model.trim ="form.name" placeholder=" 例如 /getList/xxx">  </el-input>
         </el-form-item>
-        <el-form-item label="请求类型">
+        <el-form-item label="请求类型" :rules="[{ required: true}]">
           <el-select v-model="form.requestType" placeholder="请选择请求类型">
             <el-option label="GET" value="GET"></el-option>
             <el-option label="POST" value="POST"></el-option>
@@ -48,20 +46,22 @@
           </el-select>
         </el-form-item>
         </el-form-item>
-        <el-form-item label="请求结果">
+        <el-form-item label="响应结果">
           <el-input
             type="textarea"
-            v-model="form.requestResult"
-            :autosize="{ minRows: 2, maxRows: 5 }"
+            v-model.trim="form.requestResult"
+            :autosize="{ minRows: 5, maxRows: 50 }"
+            placeholder="{data: 'helloworld'}"
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm">保存设置</el-button>
-          <el-button @click="resetForm">结果 >></el-button>
+          <el-button type="primary" @click="submitForm" :disabled="!form.name" >保存设置</el-button>
         </el-form-item>
       </el-form>
     </div>
-
+  <!-- 引入 Vue 3 的 JavaScript 文件 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <!-- 引入 ElementPlus 的 JavaScript 文件 -->
     <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.5/index.full.min.js"></script>
     <script>
       const { createApp, ref, reactive } = Vue;
@@ -76,7 +76,6 @@
           });
 
           const submitForm = () => {
-            console.log("表单提交成功，数据：" + JSON.stringify(form));
             formRef.value.validate((valid) => {
               if (valid) {
                 const { name, requestType, requestParams, requestResult } =
@@ -89,13 +88,6 @@
                     requestResult,
                   },
                 });
-                console.log(
-                  " submit!!form:",
-                  name,
-                  requestType,
-                  requestParams,
-                  requestResult
-                );
               } else {
                 console.log("error submit!!");
               }

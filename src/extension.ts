@@ -10,14 +10,8 @@ export async function activate(context: vscode.ExtensionContext) {
   registerCommand.mockServer(context);
 
   // 创建 register WebView
-  registerViewContainer.treeContainer(context);
+  registerViewContainer.webView(context);
 }
-if (mockServerInstance) {
-  mockServerInstance.setMockResponse("GET", "/page/getTableSearch", {
-    message: "这是自定义的 mock 数据",
-  });
-}
-
 // 插件停用时代码清理
 export function deactivate() {
   mockServerInstance?.stop();
