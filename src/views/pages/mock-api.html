@@ -32,12 +32,12 @@
         style="margin-top: 20px; font-size: 12px"
       >
         <el-form-item
-          label="请求地址"
+          label="接口名称（省略服务器地址和端口）"
           :rules="[{ required: true, message: '请输入请求地址', trigger: 'blur' }]"
         >
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model.trim ="form.name">  </el-input>
         </el-form-item>
-        <el-form-item label="请求类型">
+        <el-form-item label="请求类型" :rules="[{ required: true}]">
           <el-select v-model="form.requestType" placeholder="请选择请求类型">
             <el-option label="GET" value="GET"></el-option>
             <el-option label="POST" value="POST"></el-option>
@@ -46,16 +46,15 @@
           </el-select>
         </el-form-item>
         </el-form-item>
-        <el-form-item label="请求结果">
+        <el-form-item label="响应结果">
           <el-input
             type="textarea"
-            v-model="form.requestResult"
-            :autosize="{ minRows: 2, maxRows: 5 }"
+            v-model.trim="form.requestResult"
+            :autosize="{ minRows: 5, maxRows: 50 }"
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm">保存设置</el-button>
-          <el-button @click="resetForm">结果 >></el-button>
+          <el-button type="primary" @click="submitForm" :disabled="!form.name" >保存设置</el-button>
         </el-form-item>
       </el-form>
     </div>

@@ -31,10 +31,13 @@ export class MockServer {
 
   // 设置自定义响应
   setMockResponse(method: string, path: string, response: any) {
-    const key = `${method} ${path}`;
-    console.log("key:", key);
-
-    this.mockResponses[key] = response;
+    if (path) {
+      const key = `${method} ${path}`;
+      this.mockResponses[key] = JSON.parse(response);
+      vscode.window.showInformationMessage(
+        `保存数据成功 ${this.mockResponses[key]} `
+      );
+    }
   }
 
   // 开启 mock 服务
@@ -60,15 +63,20 @@ export class MockServer {
 
       const url = new URL(req.url || "", `http://${req.headers.host}`);
       const key = `${req.method} ${url.pathname}`;
-      console.log("key:", key);
-      console.log("mockResponses[key]:", this.mockResponses[key]);
       if (this.mockResponses[key]) {
         // 返回 Mock 数据
         this.returnMockData(res, this.mockResponses[key]);
       } else {
         // 转发请求
         // this.forwardRequest(req, res, url);
-        res.end(JSON.stringify({ data: "" }));
+        res.writeHead(500, { "Content-Type": "application/json" });
+        const MSG = "未设置Mock数据，请点击 配置Mock 按钮添加接口的mock数据";
+        res.end(
+          JSON.stringify({
+            Error: MSG,
+          })
+        );
+        vscode.window.showErrorMessage(MSG);
       }
       // });
     });

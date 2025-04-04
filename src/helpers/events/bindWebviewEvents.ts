@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import Data from "../../types/data";
-import { readFileSync } from "fs";
+import { getTemplate } from "../../views/browser";
 import { mockServerInstance } from "../registerCommand";
 
 interface WebviewContext {
@@ -21,17 +21,9 @@ export function bindWebviewEvents(
   context: vscode.ExtensionContext
 ): void {
   panel.webview.html = html;
-
   panel.webview.onDidReceiveMessage((message: any) => {
     vscode.window.showInformationMessage(`message：`, JSON.stringify(message));
     switch (message.command) {
-      case "submitForm":
-        const { requestType, name, requestResult } = message.data;
-        const key = `${requestType} ${name}`;
-        if (mockServerInstance) {
-          mockServerInstance.setMockResponse(requestType, name, requestResult);
-        }
-        break;
       case "startMockServer":
         if (mockServerInstance) {
           mockServerInstance.start();
@@ -46,7 +38,7 @@ export function bindWebviewEvents(
         const { page } = message.data;
         if (page === "mock-api.html") {
           // 创建新的 webview panel 并显示在右侧
-          const newPanel = vscode.window.createWebviewPanel(
+          const mockApi = vscode.window.createWebviewPanel(
             "mockApiPage",
             "Mock API 配置",
             vscode.ViewColumn.Beside, // 在右侧显示
@@ -62,22 +54,24 @@ export function bindWebviewEvents(
               ],
             }
           );
-
-          const newTemplate = () => {
-            const htmlUri = vscode.Uri.joinPath(
-              vscode.Uri.file(context.extensionPath),
-              "src",
-              "views",
-              "pages",
-              page
-            );
-            return vscode.workspace.fs.readFile(htmlUri).then((buffer) => {
-              return buffer.toString();
-            });
-          };
-
-          newTemplate().then((html) => {
-            newPanel.webview.html = html;
+          mockApi.webview.html = getTemplate(
+            context.extensionPath,
+            "/src/views/pages/mock-api.html"
+          );
+          mockApi.webview.onDidReceiveMessage((message: any) => {
+            switch (message.command) {
+              case "submitForm":
+                const { requestType, name, requestResult } = message.data;
+                const key = `${requestType} ${name}`;
+                if (mockServerInstance) {
+                  mockServerInstance.setMockResponse(
+                    requestType,
+                    name,
+                    requestResult
+                  );
+                }
+                break;
+            }
           });
         }
         break;
