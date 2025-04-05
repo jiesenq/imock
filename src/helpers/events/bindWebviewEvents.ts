@@ -12,7 +12,7 @@ interface WebviewMessage {
   value?: any;
 }
 
-let currentPanel: vscode.WebviewPanel | undefined;
+let currentPanel: vscode.WebviewView | undefined;
 
 export function bindWebviewEvents(
   panel: vscode.WebviewView,
@@ -20,8 +20,8 @@ export function bindWebviewEvents(
   context: vscode.ExtensionContext
 ): void {
   panel.webview.html = html;
+  currentPanel = panel;
   panel.webview.onDidReceiveMessage((message: any) => {
-    vscode.window.showInformationMessage(`message：`, JSON.stringify(message));
     switch (message.command) {
       case "startMockServer":
         if (mockServerInstance) {
@@ -61,7 +61,6 @@ export function bindWebviewEvents(
             switch (message.command) {
               case "submitForm":
                 const { requestType, name, requestResult } = message.data;
-                const key = `${requestType} ${name}`;
                 if (mockServerInstance) {
                   mockServerInstance.setMockResponse(
                     requestType,

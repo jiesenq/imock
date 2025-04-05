@@ -30,12 +30,12 @@ export class MockServer {
   }
 
   // 设置自定义响应
-  setMockResponse(method: string, path: string, response: any) {
+  setMockResponse(method: string, path: string, response: string) {
     if (path) {
       const key = `${method} ${path}`;
-      this.mockResponses[key] = JSON.parse(response);
+      this.mockResponses[key] = response;
       vscode.window.showInformationMessage(
-        `保存数据成功 ${this.mockResponses[key]} `
+        `保存Mock数据成功 ${this.mockResponses[key]} `
       );
     }
   }
@@ -51,8 +51,6 @@ export class MockServer {
     this.server = http.createServer((req, res) => {
       // const rateLimiter = this.createRateLimiter();
       // rateLimiter(req, res, () => {
-      console.log("key:");
-
       this.addCorsHeaders(res);
 
       // 处理 OPTIONS 请求

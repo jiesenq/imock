@@ -1,12 +1,12 @@
 import * as vscode from "vscode";
 import { MockServer } from "../server/MockServer";
-export let mockServerInstance: MockServer | null = null;
+let mockServerInstance: MockServer | null = null;
 // 从配置中获取监听端口，默认值为 3000
 let listenPort = vscode.workspace
   .getConfiguration("imock")
   .get("listenPort", 3000);
 
-export function mockServer(context: vscode.ExtensionContext) {
+function mockServer(context: vscode.ExtensionContext) {
   mockServerInstance = new MockServer(listenPort, context);
   try {
     mockServerInstance?.updateButtonText(false);
@@ -22,3 +22,5 @@ export function mockServer(context: vscode.ExtensionContext) {
     })
   );
 }
+
+export { mockServerInstance, mockServer };
