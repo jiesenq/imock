@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import Data from "../../types/data";
 import { getTemplate } from "../../views/browser";
 import { mockServerInstance } from "../registerCommand";
 

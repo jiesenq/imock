@@ -9,7 +9,6 @@ let listenPort = vscode.workspace
 export function mockServer(context: vscode.ExtensionContext) {
   mockServerInstance = new MockServer(listenPort, context);
   try {
-    // mockServerInstance.showMockSwich();
     mockServerInstance?.updateButtonText(false);
   } catch (error) {
     console.log("error:", error);

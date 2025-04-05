@@ -1,9 +1,6 @@
 import * as vscode from "vscode";
 import { getTemplate } from "../views/browser";
-// eslint-disable-next-line @typescript-eslint/naming-convention
-import { bindWebviewEvents } from "./events/bindWebviewEvents";
 import { WebviewViewProvider } from "./crteateWebview/treeContainer/webviewViewProvider";
-import { WebviewPanelGenerator } from "./crteateWebview/webViewPanel/ webviewPanelGenerator";
 
 export function webView(context: vscode.ExtensionContext) {
   // 渲染treeView

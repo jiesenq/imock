@@ -6,7 +6,6 @@ import {
 } from "vscode";
 import * as vscode from "vscode";
 
-import Data from "../../../data/types";
 import { bindWebviewEvents } from "../../events/bindWebviewEvents";
 
 class WebviewViewProvider implements vscode.WebviewViewProvider {
