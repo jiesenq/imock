@@ -30,14 +30,22 @@ export class MockServer {
   }
 
   // 设置自定义响应
-  setMockResponse(method: string, path: string, response: any) {
+  setMockResponse(method: string, path: string, response: string) {
     if (path) {
-      const key = `${method} ${path}`;
-      this.mockResponses[key] = JSON.parse(response);
-      vscode.window.showInformationMessage(
-        `保存数据成功 ${this.mockResponses[key]} `
-      );
+      try {
+        const key = `${method} ${path}`;
+        this.context.globalState.update(key, response);
+        vscode.window.showInformationMessage(`保存Mock数据成功 ${response} `);
+      } catch {
+        vscode.window.showInformationMessage(`保存Mock数据失败`);
+      }
     }
+  }
+
+  // 返回 Mock 数据
+  private returnMockData(res: http.ServerResponse, data: {}) {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(data);
   }
 
   // 开启 mock 服务
@@ -51,8 +59,6 @@ export class MockServer {
     this.server = http.createServer((req, res) => {
       // const rateLimiter = this.createRateLimiter();
       // rateLimiter(req, res, () => {
-      console.log("key:");
-
       this.addCorsHeaders(res);
 
       // 处理 OPTIONS 请求
@@ -63,9 +69,12 @@ export class MockServer {
 
       const url = new URL(req.url || "", `http://${req.headers.host}`);
       const key = `${req.method} ${url.pathname}`;
-      if (this.mockResponses[key]) {
+      let data = this.context.globalState.get(key);
+      console.log("data:", data);
+      // let data = this.context.globalState.get(key);
+      if (data) {
         // 返回 Mock 数据
-        this.returnMockData(res, this.mockResponses[key]);
+        this.returnMockData(res, data);
       } else {
         // 转发请求
         // this.forwardRequest(req, res, url);
@@ -138,12 +147,6 @@ export class MockServer {
   private handleOptionsRequest(res: http.ServerResponse) {
     res.writeHead(200);
     res.end();
-  }
-
-  // 返回 Mock 数据
-  private returnMockData(res: http.ServerResponse, response: any) {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(response));
   }
 
   // 转发请求

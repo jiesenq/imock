@@ -2,7 +2,7 @@
   "name": "imock",
   "displayName": "Imock",
   "description": "前端 mock 后端接口，支持开启和关闭",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "author": "Billy Qin",
   "license": "MIT",
   "repository": {
@@ -69,13 +69,6 @@
           "type": "webview",
           "id": "menu",
           "name": "Menu",
-          "contextualTitle": "IMock"
-        },
-        {
-          "type": "webview",
-          "id": "intercept-view",
-          "name": "Intercept api",
-          "icon": "media/mock-icon.svg",
           "contextualTitle": "IMock"
         }
       ]

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import Data from "../../types/data";
 import { getTemplate } from "../../views/browser";
 import { mockServerInstance } from "../registerCommand";
+import { json } from "node:stream/consumers";
 
 interface WebviewContext {
   extensionPath: string;
@@ -13,16 +13,16 @@ interface WebviewMessage {
   value?: any;
 }
 
-let currentPanel: vscode.WebviewPanel | undefined;
+let currentPanel: any;
 
 export function bindWebviewEvents(
   panel: vscode.WebviewView,
   html: string,
   context: vscode.ExtensionContext
 ): void {
+  currentPanel = panel;
   panel.webview.html = html;
   panel.webview.onDidReceiveMessage((message: any) => {
-    vscode.window.showInformationMessage(`message：`, JSON.stringify(message));
     switch (message.command) {
       case "startMockServer":
         if (mockServerInstance) {
@@ -62,14 +62,24 @@ export function bindWebviewEvents(
             switch (message.command) {
               case "submitForm":
                 const { requestType, name, requestResult } = message.data;
-                const key = `${requestType} ${name}`;
                 if (mockServerInstance) {
-                  mockServerInstance.setMockResponse(
-                    requestType,
-                    name,
-                    requestResult
-                  );
+                  let s = requestResult.replace(/\n/g, "");
+                  try {
+                    // 使用JSON.parse将字符串转换为JavaScript对象
+                    let data = JSON.parse(s);
+                    // 将JavaScript对象转换回JSON字符串
+                    let result = JSON.stringify(data, null, 2);
+                    mockServerInstance.setMockResponse(
+                      requestType,
+                      name,
+                      result
+                    );
+                  } catch (error) {
+                    console.log("字符串格式不正确，无法转换。");
+                  }
                 }
+                break;
+              default:
                 break;
             }
           });
