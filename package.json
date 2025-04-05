@@ -70,13 +70,6 @@
           "id": "menu",
           "name": "Menu",
           "contextualTitle": "IMock"
-        },
-        {
-          "type": "webview",
-          "id": "intercept-view",
-          "name": "Intercept api",
-          "icon": "media/mock-icon.svg",
-          "contextualTitle": "IMock"
         }
       ]
     }
