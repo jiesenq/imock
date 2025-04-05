@@ -12,15 +12,15 @@ interface WebviewMessage {
   value?: any;
 }
 
-let currentPanel: vscode.WebviewView | undefined;
+let currentPanel: any;
 
 export function bindWebviewEvents(
   panel: vscode.WebviewView,
   html: string,
   context: vscode.ExtensionContext
 ): void {
-  panel.webview.html = html;
   currentPanel = panel;
+  panel.webview.html = html;
   panel.webview.onDidReceiveMessage((message: any) => {
     switch (message.command) {
       case "startMockServer":
