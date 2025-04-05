@@ -43,9 +43,9 @@ export class MockServer {
   }
 
   // 返回 Mock 数据
-  private returnMockData(res: http.ServerResponse, data: string) {
+  private returnMockData(res: http.ServerResponse, data: {}) {
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(data));
+    res.end(data);
   }
 
   // 开启 mock 服务

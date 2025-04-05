@@ -63,8 +63,20 @@ export function bindWebviewEvents(
               case "submitForm":
                 const { requestType, name, requestResult } = message.data;
                 if (mockServerInstance) {
-                  let data = JSON.stringify(JSON.parse(requestResult), null, 2);
-                  mockServerInstance.setMockResponse(requestType, name, data);
+                  let s = requestResult.replace(/\n/g, "");
+                  try {
+                    // 使用JSON.parse将字符串转换为JavaScript对象
+                    let data = JSON.parse(s);
+                    // 将JavaScript对象转换回JSON字符串
+                    let result = JSON.stringify(data, null, 2);
+                    mockServerInstance.setMockResponse(
+                      requestType,
+                      name,
+                      result
+                    );
+                  } catch (error) {
+                    console.log("字符串格式不正确，无法转换。");
+                  }
                 }
                 break;
               default:
