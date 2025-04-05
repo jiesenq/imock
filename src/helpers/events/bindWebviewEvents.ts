@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { getTemplate } from "../../views/browser";
 import { mockServerInstance } from "../registerCommand";
+import { json } from "node:stream/consumers";
 
 interface WebviewContext {
   extensionPath: string;
@@ -62,12 +63,11 @@ export function bindWebviewEvents(
               case "submitForm":
                 const { requestType, name, requestResult } = message.data;
                 if (mockServerInstance) {
-                  mockServerInstance.setMockResponse(
-                    requestType,
-                    name,
-                    requestResult
-                  );
+                  let data = JSON.stringify(JSON.parse(requestResult), null, 2);
+                  mockServerInstance.setMockResponse(requestType, name, data);
                 }
+                break;
+              default:
                 break;
             }
           });
