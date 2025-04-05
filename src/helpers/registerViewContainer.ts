@@ -11,13 +11,6 @@ export function webView(context: vscode.ExtensionContext) {
         getTemplate(context.extensionPath, "/src/views/pages/menu.html"),
         context
       )
-    ),
-    vscode.window.registerWebviewViewProvider(
-      "intercept-view",
-      new WebviewViewProvider(
-        getTemplate(context.extensionPath, "/src/views/pages/server.html"),
-        context
-      )
     )
   );
 }
