@@ -1,10 +1,5 @@
 # IMock - 接口模拟工具
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![Version](https://img.shields.io/badge/version-1.0.0-green)
-
-> 开源轻量级接口模拟解决方案，助力高效开发与测试
-
 ## 🌟 核心特性
 
 ### 🚀 请求模拟
@@ -13,37 +8,57 @@
 - 自定义响应状态码（200/401/500 等）
 - 模拟请求头/响应头设置
 
-### 🎲 动态数据
-
-_支持数据模板语法，包含：_
-
-- `{{email}}` 随机邮箱
-- `{{timestamp}}` 时间戳
-- `{{array(5)}}` 生成数组
-- `{{regex(/^1[3-9]\d{9}$/)}}` 正则匹配
-
-### ⏱ 高级控制
-
-- 网络延迟模拟：`delay: 1500`（单位：毫秒）
-- 错误率配置：`error_rate: 0.3`（30% 失败率）
-- 动态路由参数：`/user/:id/profile`
-
 ## 🛠 快速开始
 
-### 安装步骤
+### 1. 首先在前端项目中设置代理
 
-## 🧰 使用场景
+- 代理地址和端口目前在插件中是固定的，后期版本会开放灵活配置
+- `"http://localhost:3000"` 例如 vue 项目，在 vue.config.js
 
-## 🤝 参与贡献
+```javascript
+const { defineConfig } = require("@vue/cli-service");
+module.exports = defineConfig({
+  transpileDependencies: true,
+  devServer: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "",
+        },
+      },
+    },
+  },
+});
+```
 
-1. Fork 仓库
-2. 创建特性分支 (`git checkout -b feat/new-feature`)
-3. 提交修改 (`git commit -am 'Add some feature'`)
-4. 推送分支 (`git push origin feat/new-feature`)
-5. 创建 Pull Request
+### 2. 开启 Mock 服务
 
-## 📄 开源协议
+- 打开插件后会发现有两个按钮， 点击配置 mock 按钮进行配置 mock 数据；
+- 开启服务
+  - 配置好 Mock 数据后，需要打开服务，才能正常的调用 Mock 接口
+  - 开启服务按钮与插件底部状态栏中的开启/关闭服务是同步的，根据自己的喜好点哪里都可以；
 
-本项目采用 [MIT License](LICENSE)
+### 3 配置 Mock 数据
 
-> 📌 注意：此文档为技术推测版本，实际功能请查看项目最新代码
+- 总共有三个输入项（接口名，请求类型，响应接口）；
+- 接口名
+  - 不需要服务器地址 和 端口 以及问号后面的 参数
+    - `http://localhost:3000/page/getList?abc=666` // 只需要输入 /page/getList
+- 请求类型
+  下拉自行选择
+- 请求结果
+  - 请输入 json 格式的字符串，否则会提示格式错误
+  - 返回的是 json 对象
+
+### 最后
+
+- 这个是提交的第一个版本，请大家多提意见
+- 后续会添加新的菜单，将支持新功能
+
+## 注意
+
+- 本插件用的 view 层用的是 CDN，
+- 如果您的开发环境无法联网，插件将无法使用
+- 这个问题将在下个版本中得到解决
