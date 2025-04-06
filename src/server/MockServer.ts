@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import * as http from "http";
 import * as https from "https";
 import { URL } from "url";
-import rateLimit from "express-rate-limit";
+// import rateLimit from "express-rate-limit";
 import { sendMockServerStatusToWebview } from "../helpers/events/bindWebviewEvents";
 
 // 模拟的请求结果
@@ -215,11 +215,11 @@ export class MockServer {
   }
 
   // 在 MockServer 类中添加限流中间件
-  private createRateLimiter() {
-    return rateLimit({
-      windowMs: 60 * 1000, // 1 分钟
-      max: 100, // 每分钟最多 100 个请求
-      message: "Too many requests, please try again later.",
-    });
-  }
+  //   private createRateLimiter() {
+  //     return rateLimit({
+  //       windowMs: 60 * 1000, // 1 分钟
+  //       max: 100, // 每分钟最多 100 个请求
+  //       message: "Too many requests, please try again later.",
+  //     });
+  //   }
 }
