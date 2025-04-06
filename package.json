@@ -4,7 +4,9 @@
   "description": "前端 mock 后端接口，支持开启和关闭",
   "version": "0.0.1",
   "author": "Billy Qin",
+  "publisher": "billyqin",
   "license": "MIT",
+  "icon": "media/mock-green.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/jiesenq/imock"
@@ -105,10 +107,6 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "axios": "1.8.4",
-    "element-plus": "2.3.7",
-    "express-rate-limit": "^7.5.0",
-    "typescript": "^5.8.2",
-    "vue": "3.2.47"
+    "typescript": "^5.8.2"
   }
 }
