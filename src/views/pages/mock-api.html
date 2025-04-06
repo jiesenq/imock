@@ -32,10 +32,10 @@
         style="margin-top: 20px; font-size: 12px"
       >
         <el-form-item
-          label="接口名称（省略服务器地址和端口）"
+          label="接口名称"
           :rules="[{ required: true, message: '请输入请求地址', trigger: 'blur' }]"
         >
-          <el-input v-model.trim ="form.name" placeholder=" 例如 /getList/xxx">  </el-input>
+          <el-input v-model.trim ="form.name" placeholder=" 例如:  /page/getTableList    (http://localhost:3000/page/getTableList?abc=666) // 省略服务器地址和端口">  </el-input>
         </el-form-item>
         <el-form-item label="请求类型" :rules="[{ required: true}]">
           <el-select v-model="form.requestType" placeholder="请选择请求类型">
@@ -46,16 +46,25 @@
           </el-select>
         </el-form-item>
         </el-form-item>
-        <el-form-item label="响应结果">
+        <el-form-item label="响应结果"  :rules="[{ required: true}]">
           <el-input
             type="textarea"
             v-model.trim="form.requestResult"
             :autosize="{ minRows: 5, maxRows: 50 }"
-            placeholder="{data: 'helloworld'}"
+            placeholder= "
+            {
+                'status': 200,
+                'message': '请求成功',
+                'data': {
+                  'name': 'John Doe',
+                  'age': 30,
+                  'email': 'johndoe@example.com'
+                }
+            }"
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm" :disabled="!form.name" >保存设置</el-button>
+          <el-button type="primary" @click="submitForm" :disabled="!(form.name&&form.requestType&&form.requestResult)" >保存设置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -71,7 +80,7 @@
           const formRef = ref(null);
           const form = reactive({
             name: "",
-            requestType: "",
+            requestType: "GET",
             requestResult: "",
           });
 
