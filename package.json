@@ -4,6 +4,7 @@
   "description": "前端 mock 后端接口，支持开启和关闭",
   "version": "0.0.1",
   "author": "Billy Qin",
+  "publisher": "Qinyi",
   "license": "MIT",
   "repository": {
     "type": "git",
