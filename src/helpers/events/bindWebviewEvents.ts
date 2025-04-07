@@ -54,6 +54,11 @@ export function bindWebviewEvents(
               ],
             }
           );
+          mockApi.iconPath = vscode.Uri.joinPath(
+            context.extensionUri,
+            "media",
+            "mock-green-icon.svg"
+          );
           mockApi.webview.html = getTemplate(
             context.extensionPath,
             "/src/views/pages/mock-api.html"

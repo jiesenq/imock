@@ -2,7 +2,7 @@
   "name": "imock",
   "displayName": "Imock",
   "description": "前端 mock 后端接口，支持开启和关闭",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "author": "Billy Qin",
   "publisher": "billyqin",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "url": "https://github.com/jiesenq/imock"
   },
   "engines": {
-    "vscode": "^1.98.0"
+    "vscode": "^1.5.1"
   },
   "categories": [
     "Other"
