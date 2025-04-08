@@ -2,7 +2,7 @@
   "name": "imock",
   "displayName": "Imock",
   "description": "前端 mock 后端接口，支持开启和关闭",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "author": "Billy Qin",
   "publisher": "billyqin",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "url": "https://github.com/jiesenq/imock"
   },
   "engines": {
-    "vscode": "^1.5.1"
+    "vscode": "^1.92.2"
   },
   "categories": [
     "Other"
@@ -91,7 +91,7 @@
     "@types/glob": "^7.1.3",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
-    "@types/vscode": "^1.98.0",
+    "@types/vscode": "^1.92.2",
     "@types/vscode-webview": "^1.57.5",
     "@typescript-eslint/eslint-plugin": "^8.25.0",
     "@typescript-eslint/parser": "^8.25.0",
