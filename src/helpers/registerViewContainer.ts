@@ -1,17 +1,15 @@
 import * as vscode from "vscode";
-import { mockViewTemplate } from "../views/browser";
-// eslint-disable-next-line @typescript-eslint/naming-convention
-import CONST_WEBVIEW from "../data/webview";
-import { WebviewViewProvider } from "../views/WebviewViewProvider";
+import { getTemplate } from "../views/browser";
+import { WebviewViewProvider } from "./crteateWebview/treeContainer/webviewViewProvider";
 
-export function treeContainer(context: vscode.ExtensionContext) {
+export function webView(context: vscode.ExtensionContext) {
+  // 渲染treeView
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider(
-      "mock-view",
+      "menu",
       new WebviewViewProvider(
-        mockViewTemplate,
-        context,
-        CONST_WEBVIEW.CONFIG.BASE.BROWSER
+        getTemplate(context.extensionPath, "/src/views/pages/menu.html"),
+        context
       )
     )
   );
