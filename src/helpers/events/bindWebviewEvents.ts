@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import { getTemplate } from "../../views/browser";
 import { mockServerInstance } from "../registerCommand";
-import { json } from "node:stream/consumers";
 interface WebviewContext {
   extensionPath: string;
   webviewUri: string;
@@ -20,24 +19,7 @@ export function bindWebviewEvents(
   context: vscode.ExtensionContext
 ): void {
   currentPanel = panel;
-    // 1. 生成 node_modules 中资源的 Webview 可访问路径
-    const VUE_JS = panel.webview.asWebviewUri(
-      vscode.Uri.joinPath(context.extensionUri, "node_modules", "vue", "dist", "vue.global.prod.js")
-    );
-    const ELEMENT_PLUS_CSS = panel.webview.asWebviewUri(
-      vscode.Uri.joinPath(context.extensionUri, "node_modules", "element-plus", "dist", "index.css")
-    );
-    const ELEMENT_PLUS_JS = panel.webview.asWebviewUri(
-      vscode.Uri.joinPath(context.extensionUri, "node_modules", "element-plus", "dist", "index.full.min.js")
-    );
-
-    // 2. 替换 HTML 模板中的占位符
-    const new_html = html
-      .replace("${VUE_JS}", VUE_JS.toString())
-      .replace("${ELEMENT_PLUS_CSS}", ELEMENT_PLUS_CSS.toString())
-      .replace("${ELEMENT_PLUS_JS}", ELEMENT_PLUS_JS.toString());
-
-  panel.webview.html = new_html;
+  panel.webview.html = html;
   panel.webview.onDidReceiveMessage((message: any) => {
     switch (message.command) {
       case "startMockServer":
@@ -67,6 +49,7 @@ export function bindWebviewEvents(
                   "views",
                   "pages"
                 ),
+               vscode.Uri.joinPath(context.extensionUri, "node_modules")
               ],
             }
           );
@@ -79,6 +62,20 @@ export function bindWebviewEvents(
             context.extensionPath,
             "/src/views/pages/mock-api.html"
           );
+          const vueUri = mockApi.webview.asWebviewUri(
+            vscode.Uri.joinPath(context.extensionUri, "node_modules", "vue", "dist", "vue.global.prod.js")
+          );
+          const elementPlusCssUri = mockApi.webview.asWebviewUri(
+            vscode.Uri.joinPath(context.extensionUri, "node_modules", "element-plus", "dist", "index.css")
+          );
+          const elementPlusJsUri = mockApi.webview.asWebviewUri(
+           vscode.Uri.joinPath(context.extensionUri, "node_modules", "element-plus", "dist", "index.full.min.js")
+          );
+          // 2. 替换 HTML 模板中的占位符
+         mockApi.webview.html = mockApi.webview.html
+            .replace("${vueUri}", vueUri.toString())
+            .replace("${elementPlusCssUri}", elementPlusCssUri.toString())
+            .replace("${elementPlusJsUri}", elementPlusJsUri.toString());
           mockApi.webview.onDidReceiveMessage((message: any) => {
             switch (message.command) {
               case "submitForm":

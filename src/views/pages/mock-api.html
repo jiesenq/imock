@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mock API with ElementPlus</title>
     <!-- 引入 ElementPlus 的 CSS 文件 -->
-  <link
+    <link
       rel="stylesheet"
-      href="${ELEMENT_PLUS_CSS}"
+      href="${elementPlusCssUri}"
     />
     <style>
       form {
@@ -68,8 +68,8 @@
       </el-form>
     </div>
      <!-- 引入 Vue 和 ElementPlus JS（本地 node_modules） -->
-    <script src="${VUE_JS}"></script>
-    <script src="${ELEMENT_PLUS_JS}"></script>
+    <script src="${vueUri}"></script>
+    <script src="${elementPlusJsUri}"></script>
     <script>
       const { createApp, ref, reactive } = Vue;
       const vscode = acquireVsCodeApi(); // VS Code AP
