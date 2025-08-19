@@ -62,3 +62,4 @@ module.exports = defineConfig({
 - 本插件用的 view 层用的是 CDN，
 - 如果您的开发环境无法联网，插件将无法使用
 - 这个问题将在下个版本中得到解决
+-
