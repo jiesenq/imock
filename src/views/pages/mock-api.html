@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mock API with ElementPlus</title>
     <!-- 引入 ElementPlus 的 CSS 文件 -->
-    <link
-      href="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.5/index.css"
+  <link
       rel="stylesheet"
+      href="${ELEMENT_PLUS_CSS}"
     />
-  
     <style>
       form {
         margin-top: 20px;
@@ -68,10 +67,9 @@
         </el-form-item>
       </el-form>
     </div>
-  <!-- 引入 Vue 3 的 JavaScript 文件 -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <!-- 引入 ElementPlus 的 JavaScript 文件 -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/element-plus/2.3.5/index.full.min.js"></script>
+     <!-- 引入 Vue 和 ElementPlus JS（本地 node_modules） -->
+    <script src="${VUE_JS}"></script>
+    <script src="${ELEMENT_PLUS_JS}"></script>
     <script>
       const { createApp, ref, reactive } = Vue;
       const vscode = acquireVsCodeApi(); // VS Code AP
