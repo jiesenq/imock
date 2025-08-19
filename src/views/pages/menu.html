@@ -3,18 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- 引入 ElementPlus CSS -->
+    <!-- 引入 ElementPlus CSS（本地 node_modules） -->
     <link
       rel="stylesheet"
-      href="https://unpkg.com/element-plus/dist/index.css"
+      href="${elementPlusCssUri}"
     />
     <title>Menus</title>
     <style>
       .grid-container {
         margin-top: 20px;
       }
-
-      /* 为所有按钮添加边框和左右 padding */
       .el-button {
         border: 1px solid;
         padding: 0 10px;
@@ -44,45 +42,27 @@
       </div>
     </div>
 
-    <!-- 引入 Vue 和 ElementPlus JS -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/element-plus"></script>
+    <!-- 引入 Vue 和 ElementPlus JS（本地 node_modules） -->
+    <script src="${vueUri}"></script>
+    <script src="${elementPlusJsUri}"></script>
     <script>
       const { createApp, ref } = Vue;
-      const vscode = acquireVsCodeApi(); // VS Code API
+      const vscode = acquireVsCodeApi();
 
       const app = createApp({
+        // ... 原有逻辑保持不变 ...
         setup() {
           const menuItems = ref([
-            {
-              label: "开启服务",
-              key: "server",
-              disabled: false,
-              type: "primary",
-            },
-            {
-              label: "配置Mock",
-              key: "mock-api.html",
-              disabled: false,
-              type: "primary",
-            },
-            // {
-            //   label: "Browser",
-            //   key: "page2.html",
-            //   disabled: true,
-            //   type: "info",
-            // },
+            { label: "开启服务", key: "server", disabled: false, type: "primary" },
+            { label: "配置Mock", key: "mock-api.html", disabled: false, type: "primary" }
           ]);
-
           const isMockServerRunning = ref(false);
 
           const handleButtonClick = (item, index) => {
             if (index === 0) {
               if (isMockServerRunning.value) {
                 // 关闭服务
-                vscode.postMessage({
-                  command: "stopMockServer",
-                });
+                vscode.postMessage({ command: "stopMockServer" });
                 isMockServerRunning.value = false;
                 item.label = "开启服务";
                 // 这里可以添加价格判断逻辑
@@ -90,9 +70,7 @@
                 // checkPrice();
               } else {
                 // 开启服务
-                vscode.postMessage({
-                  command: "startMockServer",
-                });
+                vscode.postMessage({ command: "startMockServer" });
                 isMockServerRunning.value = true;
                 item.label = "关闭服务";
                 // 这里可以添加价格判断逻辑
@@ -113,7 +91,7 @@
               });
             }
           };
-          // 监听主进程发送的消息
+         // 监听主进程发送的消息
           window.addEventListener("message", (event) => {
             const message = event.data;
             if (message.command === "updateMockServerStatus") {
@@ -122,10 +100,7 @@
               menuItems.value[0].label = isRunning ? "关闭服务" : "开启服务";
             }
           });
-          return {
-            menuItems,
-            handleButtonClick,
-          };
+          return { menuItems, handleButtonClick };
         },
       });
 
