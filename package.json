@@ -12,7 +12,7 @@
     "url": "https://github.com/jiesenq/imock"
   },
   "engines": {
-    "vscode": "^1.70.0"
+    "vscode": "^1.80.0"
   },
   "categories": [
     "Other"
